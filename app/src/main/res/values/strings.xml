@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">AcmeExplorer</string>
     <string name="splash_logo_app">Splash Logo App</string>
+    <string name="section_icon">Section Icon</string>
+    <string name="welcome_to_acme_explorer">Welcome to Acme-Explorer!</string>
 </resources>

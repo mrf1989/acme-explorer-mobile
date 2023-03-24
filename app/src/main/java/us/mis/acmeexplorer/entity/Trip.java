@@ -16,6 +16,7 @@ public class Trip implements Serializable {
     private Double price;
     private Date startDate;
     private Date endDate;
+    private boolean isSelected;
 
     public Trip(String from, String to, String description, Double price, Date startDate, Date endDate) {
         this.from = from;
@@ -24,6 +25,7 @@ public class Trip implements Serializable {
         this.price = price;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.isSelected = false;
     }
 
     public String getFrom() {
@@ -74,15 +76,24 @@ public class Trip implements Serializable {
         this.endDate = endDate;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     @Override
     public String toString() {
         return "Trip{" +
                 "from='" + from + '\'' +
                 ", to='" + to + '\'' +
                 ", description='" + description + '\'' +
-                ", price='" + price + '\'' +
+                ", price=" + price +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
+                ", isSelected=" + isSelected +
                 '}';
     }
 
@@ -99,7 +110,9 @@ public class Trip implements Serializable {
             numRandom = getRandomNum(0, 100);
             String tripTo = Cities.city[numRandom % Cities.city.length];
 
-            Double price = ThreadLocalRandom.current().nextDouble(10.0, 1000.0);
+            Double price = (double) Math.round((ThreadLocalRandom
+                    .current()
+                    .nextDouble(10.0, 1000.0) * 100) / 100);
 
             Date startDate = new Date();
             Calendar startCalendar = Calendar.getInstance();
@@ -108,7 +121,7 @@ public class Trip implements Serializable {
             startCalendar.add(Calendar.DAY_OF_YEAR, numRandom);
             startDate = startCalendar.getTime();
 
-            Date endDate = new Date();
+            Date endDate = (Date) startDate.clone();
             Calendar endCalendar = Calendar.getInstance();
             endCalendar.setTime(endDate);
             numRandom = getRandomNum(6, 15);
