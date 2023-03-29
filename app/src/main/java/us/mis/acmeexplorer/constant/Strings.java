@@ -1,4 +1,4 @@
-package us.mis.acmeexplorer.constants;
+package us.mis.acmeexplorer.constant;
 
 public class Strings {
     public static final String AVAILABLE_TRIPS = "Available trips";

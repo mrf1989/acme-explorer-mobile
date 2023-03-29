@@ -3,14 +3,14 @@ package us.mis.acmeexplorer.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import us.mis.acmeexplorer.MainActivity;
 import us.mis.acmeexplorer.R;
-import us.mis.acmeexplorer.constants.Strings;
+import us.mis.acmeexplorer.TripsActivity;
+import us.mis.acmeexplorer.constant.Strings;
 
 public class Link {
-    private String linkName;
-    private Class linkToClass;
-    private int linkImageResource;
+    private final String linkName;
+    private final Class linkToClass;
+    private final int linkImageResource;
 
     public Link(String linkName, Class linkToClass, int linkImageResource) {
         this.linkName = linkName;
@@ -30,10 +30,10 @@ public class Link {
         return linkImageResource;
     }
 
-    public static final List<Link> createLinks() {
+    public static List<Link> createLinks() {
         List<Link> links = new ArrayList<>();
-        links.add(new Link(Strings.AVAILABLE_TRIPS, MainActivity.class, R.drawable.available_trips));
-        links.add(new Link(Strings.SELECTED_TRIPS, MainActivity.class, R.drawable.selected_trips));
+        links.add(new Link(Strings.AVAILABLE_TRIPS, TripsActivity.class, R.drawable.available_trips));
+        links.add(new Link(Strings.SELECTED_TRIPS, TripsActivity.class, R.drawable.selected_trips));
         return links;
     }
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import us.mis.acmeexplorer.constants.Cities;
+import us.mis.acmeexplorer.constant.Cities;
 
 public class Trip implements Serializable {
     private String from;

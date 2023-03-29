@@ -14,8 +14,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 import us.mis.acmeexplorer.entity.Link;
@@ -61,7 +59,7 @@ class MenuLinkAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.menu_item, viewGroup, false);
+            view = LayoutInflater.from(context).inflate(R.layout.item_menu, viewGroup, false);
         }
 
         Link link = (Link) getItem(i);
