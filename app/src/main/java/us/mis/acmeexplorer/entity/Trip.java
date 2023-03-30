@@ -117,7 +117,7 @@ public class Trip implements Serializable {
             Date startDate = new Date();
             Calendar startCalendar = Calendar.getInstance();
             startCalendar.setTime(startDate);
-            numRandom = getRandomNum(3, 5);
+            numRandom = getRandomNum(3, 30);
             startCalendar.add(Calendar.DAY_OF_YEAR, numRandom);
             startDate = startCalendar.getTime();
 
