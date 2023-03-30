@@ -10,6 +10,7 @@ import us.mis.acmeexplorer.adapter.TripAdapter;
 
 public class TripsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter = new TripAdapter(SplashActivity.trips);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +18,7 @@ public class TripsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_trips);
 
         recyclerView = findViewById(R.id.tripsRecyclerView);
-        recyclerView.setAdapter(new TripAdapter(SplashActivity.trips));
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(TripsActivity.this));
     }
 }

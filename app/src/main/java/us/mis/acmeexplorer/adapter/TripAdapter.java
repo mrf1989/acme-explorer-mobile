@@ -1,6 +1,7 @@
 package us.mis.acmeexplorer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.icu.text.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import us.mis.acmeexplorer.MenuActivity;
 import us.mis.acmeexplorer.R;
+import us.mis.acmeexplorer.TripsActivity;
 import us.mis.acmeexplorer.entity.Trip;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
@@ -45,8 +45,28 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         tripTextView.setText(trip.getFrom() + " - " + trip.getTo());
 
         TextView tripDateTextView = holder.tripDateTextView;
-        Date startDate = trip.getStartDate();
-        tripDateTextView.setText(DateFormat.getPatternInstance(DateFormat.YEAR_ABBR_MONTH).format(startDate));
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.forLanguageTag("es-ES"));
+        String startDate = df.format(trip.getStartDate());
+        String endDate = df.format(trip.getEndDate());
+        tripDateTextView.setText(startDate + " - " + endDate);
+
+        ImageView tripSelectIcon = holder.tripSelectIcon;
+
+        if (trip.isSelected()) {
+            tripSelectIcon.setImageResource(android.R.drawable.btn_star_big_on);
+        } else {
+            tripSelectIcon.setImageResource(android.R.drawable.btn_star);
+        }
+
+        tripSelectIcon.setOnClickListener(v -> {
+            if (!trip.isSelected()) {
+                tripSelectIcon.setImageResource(android.R.drawable.btn_star_big_on);
+                trip.setSelected((true));
+            } else {
+                tripSelectIcon.setImageResource(android.R.drawable.btn_star);
+                trip.setSelected((false));
+            }
+        });
     }
 
     @Override
