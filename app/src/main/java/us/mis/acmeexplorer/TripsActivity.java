@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import us.mis.acmeexplorer.adapter.TripAdapter;
 import us.mis.acmeexplorer.entity.Filter;
@@ -51,6 +54,22 @@ public class TripsActivity extends AppCompatActivity {
         });
 
         recyclerView = findViewById(R.id.tripsRecyclerView);
+
+        Intent intent = getIntent();
+        boolean selectedTripsList = intent.getBooleanExtra("SELECTED_TRIPS", false);
+
+        if (selectedTripsList) {
+            TextView hTrips = findViewById(R.id.hTrips);
+            hTrips.setText("Selected Trips");
+            btnFilter.setVisibility(View.GONE);
+
+            List<Trip> selectedTrips = trips.stream()
+                    .filter(trip -> trip.isSelected())
+                    .collect(Collectors.toList());
+
+            adapter = new TripAdapter(selectedTrips);
+        }
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(TripsActivity.this));
     }

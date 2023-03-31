@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import us.mis.acmeexplorer.constant.Strings;
 import us.mis.acmeexplorer.entity.Link;
 
 public class MenuActivity extends AppCompatActivity {
@@ -68,9 +69,15 @@ class MenuLinkAdapter extends BaseAdapter {
         TextView textView = view.findViewById(R.id.textView);
         ImageView imageView = view.findViewById(R.id.imageView);
 
-        cardView.setOnClickListener(menuItem -> context.startActivity(
-                new Intent(context, link.getLinkToClass())
-        ));
+        cardView.setOnClickListener(menuItem -> {
+            Intent intent = new Intent(context, link.getLinkToClass());
+
+            if (link.getLinkName() == Strings.SELECTED_TRIPS) {
+                intent.putExtra("SELECTED_TRIPS", true);
+            }
+
+            context.startActivity(intent);
+        });
         textView.setText(link.getLinkName());
         imageView.setImageResource(link.getLinkImageResource());
 

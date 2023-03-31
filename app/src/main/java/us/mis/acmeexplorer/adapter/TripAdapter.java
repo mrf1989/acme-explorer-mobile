@@ -67,6 +67,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
                 trip.setSelected((false));
             }
         });
+
+        // TODO navigate to trip detail view
+        // send trip via intent
     }
 
     @Override
