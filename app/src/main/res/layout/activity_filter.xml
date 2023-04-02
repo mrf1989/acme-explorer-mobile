@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/roboto_bold"
-        android:text="Filters"
+        android:text="@string/filters"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
                 android:fontFamily="@font/roboto_bold"
                 android:paddingTop="4dp"
                 android:paddingBottom="8dp"
-                android:text="Dates"
+                android:text="@string/dates"
                 android:textSize="20sp" />
 
             <LinearLayout
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
                     android:paddingEnd="8dp"
-                    android:text="Start date" />
+                    android:text="@string/start_date" />
 
                 <TextView
                     android:id="@+id/textViewStartDate"
@@ -71,6 +71,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/icon_to_start_date"
                     app:srcCompat="@drawable/icon_calendar" />
 
                 <TextView
@@ -80,7 +81,7 @@
                     android:layout_marginStart="16dp"
                     android:fontFamily="@font/roboto"
                     android:paddingEnd="8dp"
-                    android:text="End date" />
+                    android:text="@string/end_date" />
 
                 <TextView
                     android:id="@+id/textViewEndDate"
@@ -93,6 +94,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/icon_to_end_date"
                     app:srcCompat="@drawable/icon_calendar" />
             </LinearLayout>
 
@@ -102,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
                 android:paddingVertical="8dp"
-                android:text="Price"
+                android:text="@string/price"
                 android:textSize="20sp" />
 
             <LinearLayout
@@ -116,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
                     android:paddingEnd="8dp"
-                    android:text="Min" />
+                    android:text="@string/min" />
 
                 <EditText
                     android:id="@+id/editMinPrice"
@@ -124,7 +126,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:labelFor="@id/editMinPrice"
+                    android:importantForAutofill="no" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -133,7 +137,7 @@
                     android:layout_marginStart="16dp"
                     android:fontFamily="@font/roboto"
                     android:paddingEnd="8dp"
-                    android:text="Max" />
+                    android:text="@string/max" />
 
                 <EditText
                     android:id="@+id/editMaxPrice"
@@ -141,7 +145,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:importantForAutofill="no" />
 
             </LinearLayout>
 
@@ -149,7 +154,7 @@
                 android:id="@+id/btnSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Search" />
+                android:text="@string/search" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
