@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "820118149177",
+    "project_id": "acme-explorer-mobile-c14d4",
+    "storage_bucket": "acme-explorer-mobile-c14d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820118149177:android:b4848219494671b8a655e8",
+        "android_client_info": {
+          "package_name": "us.mis.acmeexplorer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820118149177-c0dhjhdutvkqclpn3mro5tqdqp2qsvks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDseqs_gWam__uZOMGIDXAH8xX3jm7Wj74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "820118149177-0lcssgvnd0tb5qpuardjjhhu4pfg6otd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
