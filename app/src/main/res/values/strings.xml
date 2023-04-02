@@ -5,4 +5,6 @@
     <string name="welcome_to_acme_explorer">Welcome to Acme-Explorer!</string>
     <string name="filter">Filter</string>
     <string name="trips">Trips</string>
+    <string name="buy_trip">Buy Trip</string>
+    <string name="alt_trip_image">Trip image detail</string>
 </resources>

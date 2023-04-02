@@ -55,8 +55,8 @@ public class TripsActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.tripsRecyclerView);
 
-        Intent intent = getIntent();
-        boolean selectedTripsList = intent.getBooleanExtra("SELECTED_TRIPS", false);
+        boolean selectedTripsList = getIntent()
+                .getBooleanExtra("SELECTED_TRIPS", false);
 
         if (selectedTripsList) {
             TextView hTrips = findViewById(R.id.hTrips);

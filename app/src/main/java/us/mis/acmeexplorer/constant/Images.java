@@ -1,5 +1,37 @@
 package us.mis.acmeexplorer.constant;
 
 public class Images {
-    public final static String[] uri = {};
+    public final static String[] uri = {
+            "https://picsum.photos/id/10/300/300",
+            "https://picsum.photos/id/11/300/300",
+            "https://picsum.photos/id/12/300/300",
+            "https://picsum.photos/id/13/300/300",
+            "https://picsum.photos/id/14/300/300",
+            "https://picsum.photos/id/15/300/300",
+            "https://picsum.photos/id/16/300/300",
+            "https://picsum.photos/id/17/300/300",
+            "https://picsum.photos/id/18/300/300",
+            "https://picsum.photos/id/19/300/300",
+            "https://picsum.photos/id/27/300/300",
+            "https://picsum.photos/id/28/300/300",
+            "https://picsum.photos/id/29/300/300",
+            "https://picsum.photos/id/37/300/300",
+            "https://picsum.photos/id/42/300/300",
+            "https://picsum.photos/id/43/300/300",
+            "https://picsum.photos/id/44/300/300",
+            "https://picsum.photos/id/46/300/300",
+            "https://picsum.photos/id/49/300/300",
+            "https://picsum.photos/id/50/300/300",
+            "https://picsum.photos/id/54/300/300",
+            "https://picsum.photos/id/57/300/300",
+            "https://picsum.photos/id/58/300/300",
+            "https://picsum.photos/id/61/300/300",
+            "https://picsum.photos/id/66/300/300",
+            "https://picsum.photos/id/74/300/300",
+            "https://picsum.photos/id/76/300/300",
+            "https://picsum.photos/id/77/300/300",
+            "https://picsum.photos/id/84/300/300",
+            "https://picsum.photos/id/85/300/300",
+            "https://picsum.photos/id/88/300/300",
+    };
 }

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import us.mis.acmeexplorer.constant.Cities;
+import us.mis.acmeexplorer.constant.Descriptions;
+import us.mis.acmeexplorer.constant.Images;
 
 public class Trip implements Serializable {
     private String from;
@@ -17,8 +19,10 @@ public class Trip implements Serializable {
     private Date startDate;
     private Date endDate;
     private boolean isSelected;
+    private String imageURI;
 
-    public Trip(String from, String to, String description, Double price, Date startDate, Date endDate) {
+    public Trip(String from, String to, String description, Double price,
+                Date startDate, Date endDate, String imageURI) {
         this.from = from;
         this.to = to;
         this.description = description;
@@ -26,6 +30,7 @@ public class Trip implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isSelected = false;
+        this.imageURI = imageURI;
     }
 
     public String getFrom() {
@@ -84,6 +89,10 @@ public class Trip implements Serializable {
         isSelected = selected;
     }
 
+    public String getImageURI() { return imageURI; }
+
+    public void setImageURI(String uri) { imageURI = uri; }
+
     @Override
     public String toString() {
         return "Trip{" +
@@ -94,6 +103,7 @@ public class Trip implements Serializable {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", isSelected=" + isSelected +
+                ", imageURI=" + imageURI +
                 '}';
     }
 
@@ -128,7 +138,11 @@ public class Trip implements Serializable {
             endCalendar.add(Calendar.DAY_OF_YEAR, numRandom);
             endDate = endCalendar.getTime();
 
-            Trip trip = new Trip(tripFrom, tripTo, "Lorem ipsum...", price, startDate, endDate);
+            numRandom = getRandomNum(0, 100);
+            String uri = Images.uri[numRandom % Images.uri.length];
+            String description = Descriptions.lorem[numRandom % Descriptions.lorem.length];
+
+            Trip trip = new Trip(tripFrom, tripTo, description, price, startDate, endDate, uri);
             trips.add(trip);
         }
         return trips;
