@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/login_email">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/login_email_et"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/login_password">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/login_password_et"
