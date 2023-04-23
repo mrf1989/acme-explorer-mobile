@@ -12,17 +12,18 @@ import us.mis.acmeexplorer.constant.Descriptions;
 import us.mis.acmeexplorer.constant.Images;
 
 public class Trip implements Serializable {
+    private String id;
     private String from;
     private String to;
     private String description;
     private Double price;
-    private Date startDate;
-    private Date endDate;
+    private Long startDate;
+    private Long endDate;
     private boolean isSelected;
     private String imageURI;
 
     public Trip(String from, String to, String description, Double price,
-                Date startDate, Date endDate, String imageURI) {
+                Long startDate, Long endDate, String imageURI) {
         this.from = from;
         this.to = to;
         this.description = description;
@@ -32,6 +33,12 @@ public class Trip implements Serializable {
         this.isSelected = false;
         this.imageURI = imageURI;
     }
+
+    public Trip() {}
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 
     public String getFrom() {
         return from;
@@ -65,27 +72,27 @@ public class Trip implements Serializable {
         this.price = price;
     }
 
-    public Date getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 
-    public boolean isSelected() {
+    public boolean getIsSelected() {
         return isSelected;
     }
 
-    public void setSelected(boolean selected) {
+    public void setIsSelected(boolean selected) {
         isSelected = selected;
     }
 
@@ -124,19 +131,19 @@ public class Trip implements Serializable {
                     .current()
                     .nextDouble(10.0, 1000.0) * 100) / 100);
 
-            Date startDate = new Date();
+            Long startDate = new Date().getTime();
             Calendar startCalendar = Calendar.getInstance();
-            startCalendar.setTime(startDate);
+            startCalendar.setTime(new Date(startDate));
             numRandom = getRandomNum(3, 30);
             startCalendar.add(Calendar.DAY_OF_YEAR, numRandom);
-            startDate = startCalendar.getTime();
+            startDate = startCalendar.getTimeInMillis();
 
-            Date endDate = (Date) startDate.clone();
+            Long endDate = startDate;
             Calendar endCalendar = Calendar.getInstance();
-            endCalendar.setTime(endDate);
+            endCalendar.setTime(new Date(endDate));
             numRandom = getRandomNum(6, 15);
             endCalendar.add(Calendar.DAY_OF_YEAR, numRandom);
-            endDate = endCalendar.getTime();
+            endDate = endCalendar.getTimeInMillis();
 
             numRandom = getRandomNum(0, 100);
             String uri = Images.uri[numRandom % Images.uri.length];

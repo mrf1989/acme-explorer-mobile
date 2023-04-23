@@ -12,7 +12,6 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -21,16 +20,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.List;
+
+import us.mis.acmeexplorer.entity.Trip;
+import us.mis.acmeexplorer.service.FirebaseDatabaseService;
 
 public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 0x152;
@@ -48,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FirebaseApp.initializeApp(this);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -164,8 +170,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkUserDatabaseLogin(FirebaseUser user) {
-        // TODO
         Toast.makeText(this, String.format(getString(R.string.login_completed), user.getEmail()), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+
+        restartDatabase();
     }
 
     private void showErrorEmailVerified(FirebaseUser user) {
@@ -211,5 +221,15 @@ public class MainActivity extends AppCompatActivity {
             loginEmailParent.setEnabled(true);
             loginPasswordParent.setEnabled(true);
         }
+    }
+
+    private void restartDatabase() {
+        FirebaseDatabaseService firebaseDatabaseService = FirebaseDatabaseService.getServiceInstance();
+
+        firebaseDatabaseService.removeCollection((error, ref) -> {
+            System.out.println("Database remove completed!");
+            List<Trip> trips = SplashActivity.trips;
+            trips.forEach(trip -> firebaseDatabaseService.saveTrip(trip, (error1, ref1) -> {}));
+        });
     }
 }

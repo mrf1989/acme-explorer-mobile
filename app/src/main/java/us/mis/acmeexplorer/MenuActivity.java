@@ -73,7 +73,9 @@ class MenuLinkAdapter extends BaseAdapter {
             Intent intent = new Intent(context, link.getLinkToClass());
 
             if (link.getLinkName() == Strings.SELECTED_TRIPS) {
-                intent.putExtra("SELECTED_TRIPS", true);
+                intent.putExtra("NAVIGATE_TO", "SELECTED_TRIPS");
+            } else if (link.getLinkName() == Strings.AVAILABLE_TRIPS) {
+                intent.putExtra("NAVIGATE_TO", "LIST_TRIPS");
             }
 
             context.startActivity(intent);
