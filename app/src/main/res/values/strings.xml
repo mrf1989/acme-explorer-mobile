@@ -51,4 +51,5 @@
     <string name="no_location">No Location</string>
     <string name="location_permission_error">Location Permission Error</string>
     <string name="location_permission_retry">Location Permission Retry</string>
+    <string name="don_t_you_have_a_user_account_yet">Don\'t you have an user account yet?</string>
 </resources>

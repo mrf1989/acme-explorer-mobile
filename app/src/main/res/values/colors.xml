@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background_main">#EDEDEDED</color>
     <color name="blue_button">#2196F3</color>
+    <color name="google_login_button">#D3552D</color>
 </resources>
