@@ -12,24 +12,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
 
-import us.mis.acmeexplorer.MenuActivity;
 import us.mis.acmeexplorer.R;
 import us.mis.acmeexplorer.TripDetailActivity;
-import us.mis.acmeexplorer.TripsActivity;
 import us.mis.acmeexplorer.entity.Trip;
+import us.mis.acmeexplorer.service.FirebaseDatabaseService;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     private List<Trip> trips;
+    private FirebaseDatabaseService firebaseDatabaseService = FirebaseDatabaseService.getServiceInstance();
 
     public TripAdapter(List<Trip> trips) {
         this.trips = trips;
+    }
+
+    public void setTripsList(List<Trip> tripsList) {
+        this.trips = tripsList;
     }
 
     @NonNull
@@ -64,21 +71,31 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
         ImageView tripSelectIcon = holder.tripSelectIcon;
 
-        if (trip.isSelected()) {
+        if (trip.getIsSelected()) {
             tripSelectIcon.setImageResource(android.R.drawable.btn_star_big_on);
         } else {
             tripSelectIcon.setImageResource(android.R.drawable.btn_star);
         }
 
         tripSelectIcon.setOnClickListener(v -> {
-            if (!trip.isSelected()) {
+            if (!trip.getIsSelected()) {
                 tripSelectIcon.setImageResource(android.R.drawable.btn_star_big_on);
-                trip.setSelected((true));
-                Toast.makeText(v.getContext(), "Add to selected trips", Toast.LENGTH_SHORT).show();
+                trip.setIsSelected((true));
+//                firebaseDatabaseService.selectTrip(trip.getId(), (error, ref) -> {
+//                    Toast.makeText(v.getContext(), "Add to selected trips", Toast.LENGTH_SHORT).show();
+//                });
+                firebaseDatabaseService.addTrip(trip, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                        Toast.makeText(v.getContext(), "Add to selected trips", Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else {
                 tripSelectIcon.setImageResource(android.R.drawable.btn_star);
-                trip.setSelected((false));
-                Toast.makeText(v.getContext(), "Remove to selected trips", Toast.LENGTH_SHORT).show();
+                trip.setIsSelected((false));
+                firebaseDatabaseService.unSelectTrip(trip.getId(), (error, ref) -> {
+                    Toast.makeText(v.getContext(), "Remove to selected trips", Toast.LENGTH_SHORT).show();
+                });
             }
         });
 

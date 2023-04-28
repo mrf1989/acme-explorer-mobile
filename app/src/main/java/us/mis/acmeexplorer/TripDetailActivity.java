@@ -51,7 +51,7 @@ public class TripDetailActivity extends AppCompatActivity {
         textViewPriceTripDetail.setText(trip.getPrice() + " €");
         textViewDescriptionTripDetail.setText(trip.getDescription());
 
-        if (!trip.isSelected()) {
+        if (!trip.getIsSelected()) {
             btnBuyTrip.setVisibility(View.GONE);
         }
 
