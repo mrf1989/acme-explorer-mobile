@@ -81,9 +81,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             if (!trip.getIsSelected()) {
                 tripSelectIcon.setImageResource(android.R.drawable.btn_star_big_on);
                 trip.setIsSelected((true));
-//                firebaseDatabaseService.selectTrip(trip.getId(), (error, ref) -> {
-//                    Toast.makeText(v.getContext(), "Add to selected trips", Toast.LENGTH_SHORT).show();
-//                });
                 firebaseDatabaseService.addTrip(trip, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
@@ -93,7 +90,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
             } else {
                 tripSelectIcon.setImageResource(android.R.drawable.btn_star);
                 trip.setIsSelected((false));
-                firebaseDatabaseService.unSelectTrip(trip.getId(), (error, ref) -> {
+                firebaseDatabaseService.unSelectTrip(trip, (error, ref) -> {
                     Toast.makeText(v.getContext(), "Remove to selected trips", Toast.LENGTH_SHORT).show();
                 });
             }
