@@ -12,7 +12,7 @@ import us.mis.acmeexplorer.entity.Trip;
 
 public class SplashActivity extends AppCompatActivity {
     private final int SPLASH_DURATION = 2000;
-    public static final List<Trip> trips = Trip.generateTrips(100);
+    //public static final List<Trip> trips = Trip.generateTrips(100);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

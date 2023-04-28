@@ -3,6 +3,7 @@ package us.mis.acmeexplorer;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,13 +18,18 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import us.mis.acmeexplorer.adapter.TripAdapter;
@@ -32,14 +38,16 @@ import us.mis.acmeexplorer.entity.Trip;
 import us.mis.acmeexplorer.service.FirebaseDatabaseService;
 
 public class TripsActivity extends AppCompatActivity {
-    private Filter filter = new Filter();
+    private Filter filter = null;
     private Button btnFilter;
     private TextView hTrips;
     private RecyclerView recyclerView;
+    private HashMap<String, Trip> tripHashMap = new HashMap<>();
     private List<Trip> trips = new ArrayList<>();
     private List<Trip> filteredTrips;
     private TripAdapter adapter = new TripAdapter(trips);
     private FirebaseDatabaseService firebaseDatabaseService = FirebaseDatabaseService.getServiceInstance();
+    private boolean filterSearch = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +55,7 @@ public class TripsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_trips);
         btnFilter = findViewById(R.id.btnFilter);
         hTrips = findViewById(R.id.hTrips);
-
         String navigateTo = getIntent().getStringExtra("NAVIGATE_TO");
-        if (navigateTo.equals("SELECTED_TRIPS")) {
-            hTrips.setText("Selected Trips");
-            btnFilter.setVisibility(View.GONE);
-        }
 
         firebaseDatabaseService.getTrips().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -61,27 +64,46 @@ public class TripsActivity extends AppCompatActivity {
                     Log.e("firebase", "Error getting data", task.getException());
                 }
                 else {
-                    trips.clear();
                     for (DataSnapshot tripSnapshot : task.getResult().getChildren()) {
+                        String id = tripSnapshot.getKey();
                         Trip trip = tripSnapshot.getValue(Trip.class);
-                        switch (navigateTo) {
-                            case "SELECTED_TRIPS":
-                                if (trip.getIsSelected()) {
-                                    trip.setId(tripSnapshot.getKey());
-                                    trips.add(trip);
-                                }
-                                break;
-                            case "LIST_TRIPS":
-                                trip.setId(tripSnapshot.getKey());
-                                trips.add(trip);
-                                break;
+                        trip.setId(id);
+                        tripHashMap.put(id, trip);
+                    }
+                }
+
+                firebaseDatabaseService.getSelectedTrips().addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        if (snapshot.exists() && snapshot.getValue() != null) {
+                            Trip trip = snapshot.getValue(Trip.class);
+                            tripHashMap.get(trip.getId()).setIsSelected(true);
+                            updateTripList(navigateTo.equals("SELECTED_TRIPS"));
                         }
                     }
-                    adapter.setTripsList(trips);
-                    adapter.notifyDataSetChanged();
-                }
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists() && snapshot.getValue() != null) {
+                            Trip trip = snapshot.getValue(Trip.class);
+                            tripHashMap.get(trip.getId()).setIsSelected(false);
+                            updateTripList(navigateTo.equals("SELECTED_TRIPS"));
+                        }
+                    }
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
+                });
+                updateTripList(navigateTo.equals("SELECTED_TRIPS"));
             }
         });
+
+        if (navigateTo.equals("SELECTED_TRIPS")) {
+            hTrips.setText("Selected Trips");
+            btnFilter.setVisibility(View.GONE);
+        }
 
         ActivityResultLauncher<Intent> startActivityResult = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -89,6 +111,7 @@ public class TripsActivity extends AppCompatActivity {
                     if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
                         Intent data = result.getData();
                         filter = data.getParcelableExtra("SEARCH_FILTER");
+                        filterSearch = true;
                         filterTrips(filter);
                     }
                 }
@@ -102,6 +125,30 @@ public class TripsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.tripsRecyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(TripsActivity.this));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        filter = null;
+    }
+
+    private void updateTripList(boolean selectedOnly) {
+        trips.clear();
+        trips.addAll(tripHashMap.values());
+
+        if (selectedOnly) {
+            trips = trips.stream()
+                    .filter(Trip::getIsSelected)
+                    .collect(Collectors.toList());
+        }
+
+        if (filter != null) {
+            filterTrips(filter);
+        } else {
+            adapter.setTripsList(trips);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void filterTrips(Filter filter) {
@@ -127,7 +174,10 @@ public class TripsActivity extends AppCompatActivity {
                 filteredTrips.add(trip);
             }
         }
-        Toast.makeText(TripsActivity.this, "" + filteredTrips.size() + " trips found", Toast.LENGTH_LONG).show();
+        if (filterSearch) {
+            filterSearch = false;
+            Toast.makeText(TripsActivity.this, "" + filteredTrips.size() + " trips found", Toast.LENGTH_LONG).show();
+        }
         adapter.setTripsList(filteredTrips);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);

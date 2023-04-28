@@ -36,16 +36,20 @@ public class FirebaseDatabaseService {
         mDatabase.getReference("trips").push().setValue(trip, completionListener);
     }
 
+    /*public DatabaseReference getTrips() {
+        return mDatabase.getReference("trips").getRef();
+    }*/
+
     public Task<DataSnapshot> getTrips() {
         return mDatabase.getReference("trips").get();
     }
 
-    public void selectTrip(String tripId, DatabaseReference.CompletionListener completionListener) {
-        mDatabase.getReference("trips/" + tripId + "/isSelected").setValue(true, completionListener);
+    public DatabaseReference getSelectedTrips() {
+        return mDatabase.getReference("users/" + userId + "/trips").getRef();
     }
 
-    public void unSelectTrip(String tripId, DatabaseReference.CompletionListener completionListener) {
-        mDatabase.getReference("trips/" + tripId + "/isSelected").setValue(false, completionListener);
+    public void unSelectTrip(Trip trip, DatabaseReference.CompletionListener completionListener) {
+        mDatabase.getReference("users/" + userId + "/trips/" + trip.getId()).removeValue(completionListener);
     }
 
     public void addTrip(Trip trip, DatabaseReference.CompletionListener completionListener) {

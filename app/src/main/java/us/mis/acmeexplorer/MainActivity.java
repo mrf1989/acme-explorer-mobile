@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
 
-        restartDatabase();
+        //restartDatabase();
     }
 
     private void showErrorEmailVerified(FirebaseUser user) {
@@ -228,8 +228,8 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseDatabaseService.removeCollection((error, ref) -> {
             System.out.println("Database remove completed!");
-            List<Trip> trips = SplashActivity.trips;
-            trips.forEach(trip -> firebaseDatabaseService.saveTrip(trip, (error1, ref1) -> {}));
+            //List<Trip> trips = SplashActivity.trips;
+            //trips.forEach(trip -> firebaseDatabaseService.saveTrip(trip, (error1, ref1) -> {}));
         });
     }
 }
