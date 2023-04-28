@@ -38,8 +38,13 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.BlockingQueue;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import us.mis.acmeexplorer.entity.Trip;
+import us.mis.acmeexplorer.service.ApiRestCalls;
 
 public class TripDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private ImageView imageViewTripDetail;
@@ -48,12 +53,11 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
     private TextView textViewPriceTripDetail;
     private TextView textViewDescriptionTripDetail;
     private Button btnBuyTrip;
-
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 0x123;
     private GoogleMap mMap;
     private MapView mapView;
     private FusedLocationProviderClient mFusedLocationClient;
-    private LocationCallback mLocationCallback;
+    //private LocationCallback mLocationCallback;
     private boolean mRequestingLocationUpdates = true;
     private LocationRequest mLocationRequest;
 
@@ -102,7 +106,7 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
         mLocationRequest.setInterval(5000);
         mLocationRequest.setFastestInterval(1000);
 
-        mLocationCallback = new LocationCallback() {
+        /*mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
@@ -114,7 +118,7 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
                     }
                 }
             }
-        };
+        };*/
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -164,7 +168,7 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     protected void onPause() {
         mapView.onPause();
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+        //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         super.onPause();
     }
 
@@ -193,6 +197,34 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
             location.setLongitude(point.longitude);
             setMarkerLocation(location);
         });*/
+
+        Trip trip = (Trip) getIntent().getSerializableExtra("TRIP");
+        ApiRestCalls apiRestCalls = new ApiRestCalls();
+        apiRestCalls.getLocationCity(trip.getFrom(), new Callback<Location>() {
+            @Override
+            public void onResponse(Call<Location> call, Response<Location> response) {
+                if (response.body() == null)
+                    return;
+                Location resultTripFromLocation = response.body();
+                setMarkerLocation(resultTripFromLocation, "Departure city");
+            }
+
+            @Override
+            public void onFailure(Call<Location> call, Throwable t) {}
+        });
+
+        apiRestCalls.getLocationCity(trip.getTo(), new Callback<Location>() {
+            @Override
+            public void onResponse(Call<Location> call, Response<Location> response) {
+                if (response.body() == null)
+                    return;
+                Location resultTripFromLocation = response.body();
+                setMarkerLocation(resultTripFromLocation, "Destination city");
+            }
+
+            @Override
+            public void onFailure(Call<Location> call, Throwable t) {}
+        });
     }
 
     private void updateMapLocation() {
@@ -201,7 +233,7 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
             mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
-                    setMarkerLocation(location);
+                    setMarkerLocation(location, "Your location");
                 }
             });
         }
@@ -243,7 +275,7 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
-    private void setMarkerLocation(Location location) {
+    private void setMarkerLocation(Location location, String snippet) {
         Geocoder geoCoder = new Geocoder(getApplicationContext());
         List<Address> matches = null;
         try {
@@ -252,11 +284,12 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
             if (bestMatch != null) {
                 mRequestingLocationUpdates = false;
                 LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.clear();
+                //mMap.clear();
                 mMap.addMarker(new MarkerOptions()
                         .position(newLocation)
-                        .title(bestMatch.getLocality()));
-                mMap.setMinZoomPreference(8);
+                        .title(bestMatch.getLocality())
+                        .snippet(snippet));
+                mMap.setMinZoomPreference(4);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(newLocation));
             } else {
                 Toast.makeText(getApplicationContext(), R.string.no_location, Toast.LENGTH_SHORT).show();
