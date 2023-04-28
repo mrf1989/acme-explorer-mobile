@@ -130,7 +130,7 @@ public class TripsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        filter = null;
+        //filter = null;
     }
 
     private void updateTripList(boolean selectedOnly) {
