@@ -45,4 +45,10 @@
     <string name="signup_error_pass_not_match">The password are not match</string>
     <string name="signup_created">User created correctly</string>
     <string name="signup_create_error">Signup error</string>
+    <string name="google_maps_view">Google Maps fragment view</string>
+    <string name="location_title">Location</string>
+    <string name="location_trip">Location Trip</string>
+    <string name="no_location">No Location</string>
+    <string name="location_permission_error">Location Permission Error</string>
+    <string name="location_permission_retry">Location Permission Retry</string>
 </resources>
